@@ -16,25 +16,20 @@ export async function fetchMovies(
   page: number
 ): Promise<FetchMoviesResult> {
   try {
-    const response = await axios.get<{
-      page: number;
-      results: Movie[];
-      total_pages: number;
-      total_results: number;
-    }>(BASE_URL, {
+    const response = await axios.get<FetchMoviesResult>(BASE_URL, {
       params: {
+        api_key: myToken,   
         query,
         include_adult: false,
         language: "en-US",
         page,
       },
-      headers: {
-        Authorization: `Bearer ${myToken}`,
-      },
+      
     });
 
     return response.data;
-  } catch {
+  } catch (error) {
+    console.error("API error:", error);
     throw new Error("There was an error, please try again...");
   }
 }
